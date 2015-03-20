@@ -28,3 +28,17 @@ for top, dir, files in os.walk('/home/artem/az.lib.ru2/az.lib.ru/'):
             words.extend(r)
         db.books.save({'Path' : path, 'Text' : MeaningText, 'Words' : words})
         document.close()
+
+if __name__ == "__main__":
+    print "Hi my dear friend. What do u want to know about this db ?"
+    if len(sys.argv) != 3:
+        print "Sorry but we don't have such command, try again"
+    else:
+        FirstWord = sys.argv[1]
+        SecondWord = sys.argv[2]
+        if FirstWord == 'sh' and SecondWord == 'elements':
+            print db.books.count()
+        elif FirstWord == 'sh' and SecondWord == 'rand':
+            print db.books.find().limit(-1).skip(5).next()
+        else:
+            print "Sorry but we don't have such command, try again"
