@@ -1,0 +1,133 @@
+Фролов Дмитрий Сергеевич
+dmrtsf@gmail.com
+http://slickjump.com
+
+1.Поисковая система
+
+~Python3.1
+
+ВПС - выделенный сервер
+
+~Операционный системы:
+OpenSUSE
+FreeBSD
+CentOS
+
+~Команды
+apt-get, install
+1. /configure
+2. make
+3. make install
+
+~Оболочки :
+sh
+bash
+2sh (Oh My 2SH)
+
+Комманды :
+man ls
+ls  -l, -a, -h
+Example: ls - lh
+pwd
+df -h
+du
+mc
+tmux
+cat
+echo  ". . ."
+cd ..	переместится  выше на уровень
+cd /    переместится  в корень
+cd      переместится в домашнюю папку
+ln  -s  ... .... ....
+mv
+rm -f
+rm -fr
+less
+more
+find / -name 123 -type d
+
+
+В линуксе присваивается каждому флу перенаправления
+0 - STDIN
+1 - STDOUT
+2 - STDERR
+
+/dev/null - черная дыра
+
+>, >>, <, |
+; - если нужно выполнить команды которые не зависят друг от друга
+firstcommand && secondcommand - выполниться лишь тогда , если первая комманда завершилась успешно
+lynx http://ya.ru
+
+passwd
+chmod поменят права
+chown меняет владельца компьютера
+
+~Текстовый редактор:
+
+gedit - только посмотреть содержимое файла
+ed
+vi
+nano
+vim
+emacs  (-nw чтобы открыть без окна)
+
+alt-x затем пишем doctor в emacs
+
+Пакет для работы с естейственным языком:
+NLTK
+PyMorphy
+MyStem
+
+Комманды git:
+git
+git clone
+git init
+
+cd MyR...
+git branch - посмотреть список веток
+* master - не надо разрабатыват в нем
+git checkout -b dev
+git status ...
+git diff ...
+git add .... .... . . ..
+git commit [-a] [-m '...']
+git pull / fetch
+git push - отправляет вашу ветку в удаленный репазиторий
+git merge
+
+
+Базы данных бывают нескольких типов. СУБД.
+SQL (MySQL, PostgreSQL, ..)
+							Для про:	Comindware
+MongoDB
+XML
+JSON
+
+Запись , чтение, удалени в MongoDB
+
+Mongos
+>use db1
+>db.c1.insert({...})
+>db.c1.remove(....)      _id:....
+>db.c1.update(....)
+>db.c1.find(....)
+
+
+
+Список литературы:
+1.James Elliot
+	'Using GNU Emacs"
+2.Администрирование UNIX и Linux, Hemet
+3. mongodb.org
+4. git
+-----------------------------------
+
+~Дз:
+Книжку 2.
+скачать в себе репозеторий
+python
+python-dev
+mongodb install
+pymongo
+
