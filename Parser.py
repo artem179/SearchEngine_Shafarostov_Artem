@@ -1,44 +1,50 @@
 import re
+import argparse
 import pymongo
 import os
-import sys
+import codecs
 from bs4 import BeautifulSoup
-from imp import reload
-reload(sys)
-sys.setdefaultencoding('utf-8')
 
-from pymongo import Connection
-connection = Connection()
-connection.drop_database("test_database")
-db = connection.test_database
-db.drop_collection('books')
-
-words = []
-
-for top, dir, files in os.walk('/home/artem/az.lib.ru2/az.lib.ru/'):
-    for a in files:
-        path = os.path.join(top, a)
-        document = open(path)
-        parsered = BeautifulSoup(document)
-        [x.extract() for x in parsered.findAll('script')]
-        MeaningText = parsered.get_text().encode('utf-8')
-        for s in MeaningText:
-            r = re.split("[\s;:\-_*\".,?!()]", s)
-            r = [a for a in r if a != '']
-            words.extend(r)
-        db.books.save({'Path' : path, 'Text' : MeaningText, 'Words' : words})
-        document.close()
+def index_directory(directory_name, db_collection, **kwargs):
+    for root, dir, files in os.walk(directory_name):
+        for filename in files:
+            path = os.path.join(root, filename)
+            if kwargs.get("filename_regex") and \
+                not re.fullmatch(kwargs["filename_regex"], filename):
+                    continue
+            print("Indexing " + path)
+            with codecs.open(path, 'r', encoding='cp1251') as document:
+                parsed_document = BeautifulSoup(document)
+                [x.extract() for x in parsed_document( ['style', 'script', '[document]', 'head', 'title'])]
+                document_text = parsed_document.get_text()
+                words = []
+                for line in document_text:
+                    r = re.split("[\s;:\-_*\".,?!()]", line)
+                    r = [a for a in r if a != '']
+                    words.extend(r)
+                db_collection.save({'Path' : path, 'Text' : document_text})
 
 if __name__ == "__main__":
-    print "Hi my dear friend. What do u want to know about this db ?"
-    if len(sys.argv) != 3:
-        print "Sorry but we don't have such command, try again"
-    else:
-        FirstWord = sys.argv[1]
-        SecondWord = sys.argv[2]
-        if FirstWord == 'sh' and SecondWord == 'elements':
-            print db.books.count()
-        elif FirstWord == 'sh' and SecondWord == 'rand':
-            print db.books.find().limit(-1).skip(5).next()
-        else:
-            print "Sorry but we don't have such command, try again"
+    parser = argparse.ArgumentParser()
+    parser.add_argument('directories', nargs='*',
+            help='directories with html files to be indexed')
+    parser.add_argument('--drop-index', action='store_true',
+            help='delete previously indexed information from db')
+    parser.add_argument('--db-name', default='test_database',
+            help='name of the database to connect to')
+    parser.add_argument('--collection-name', default='texts',
+            help='name of collection to connect to')
+    parser.add_argument('--filename-regex',
+            help='filenames of files to be indexed must match the regex')
+    args = parser.parse_args()
+
+    connection = pymongo.MongoClient()
+    db = connection.get_database(args.db_name)
+    if args.drop_index:
+        print("Deleting collection " + args.collection_name)
+        db.drop_collection(args.collection_name)
+    collection = db.get_collection(args.collection_name)
+
+    for directory_name in args.directories:
+        index_directory(directory_name, collection,
+                filename_regex=args.filename_regex)
