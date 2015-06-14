@@ -32,7 +32,7 @@ each file to the database, it normalizes each word in the text using `pymorphy2`
 that you want to find in the database and returns the list of all documents containing
 given string. Text is being searched using mongodb's text indexes, and it behaves like
 described [here](http://docs.mongodb.org/manual/reference/operator/query/text/#search-field).
-So, for example, if you want to search for a phrase `good morning`, you have to path string
+So, for example, if you want to search for a phrase `good morning`, you have to pass string
 `"\"good morning\""` to the find_occurences function.
 `Search.py` can also be used as a script, run `python Search.py --help` for more info.
 
