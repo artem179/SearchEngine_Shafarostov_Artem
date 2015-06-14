@@ -8,7 +8,7 @@ import Indexer
 
 def find_occurences(query, collection, skip, limit):
     pipeline = [
-            {"$match": {"$text": {"$search": query} } },
+            {"$match": {"$text": {"$search": query.lower()} } },
             {"$project": {'textScore': {'$meta': 'textScore'}, 'path': 1 } },
             {"$sort": SON([('textScore', {'$meta': 'textScore'})])},
             {"$skip": skip},
