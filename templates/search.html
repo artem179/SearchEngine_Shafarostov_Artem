@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+  </head>
+  <body role="document" style="padding-top: 50px">
+    <div class="container col-md-6 col-md-offset-3">
+      <form action="{{ url_for('search') }}" method="get" name="search">
+        <div class="row">
+          <div class="input-group">
+            <input type="text" class="form-control" name=query value="{{ request.args.get('query') or '' }}" placeholder="Search for...">
+            <span class="input-group-btn">
+              <button class="btn btn-default" type="submit">Search</button>
+            </span>
+          </div><!-- /input-group -->
+          <!-- /.col-lg-6 -->
+        </div><!-- /.row -->
+      </form>
+      <p></p>
+      {% if found|length > 0 %}
+      <table class="table table-condensed">
+        <thead>
+          <tr>
+            <th>Relevance</th>
+            <th>Document path</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for entry in found %}
+          <tr>
+            <td>{{ entry["textScore"] }}</td>
+            <td>{{ entry["path"] }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% endif %}
+      {% if page > 1 %}
+        <a href="{{ url_for('search', query=request.args.get('query'), page=page-1) }}"> previous </a>
+      {% endif %}
+      <a href="{{ url_for('search', query=request.args.get('query'), page=page+1) }}"> next </a>
+    </div>
+  </body>
+</html>
+
