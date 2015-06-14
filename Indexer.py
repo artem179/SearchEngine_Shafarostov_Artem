@@ -53,6 +53,9 @@ if __name__ == "__main__":
             help='language of documents to be added to db.\
                     This value will be set as default language of the\
                     collection when called with `--drop-index`.')
+    parser.add_argument('--use-pymorphy', action='store_true',
+            help='before adding any file to the database, normalize it\
+                    using pymorphy2.')
     args = parser.parse_args()
 
     connection = pymongo.MongoClient()
@@ -67,7 +70,7 @@ if __name__ == "__main__":
                 default_language=args.language)
 
     morph = None
-    if args.language == 'ru' or args.language == 'russian':
+    if use_pymorphy:
         morph = pymorphy2.MorphAnalyzer()
 
     for directory_name in args.directories:
