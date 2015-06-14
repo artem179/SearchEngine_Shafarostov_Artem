@@ -4,7 +4,7 @@ import pymongo
 from bson.son import SON
 import os
 
-import Parser
+import Indexer
 
 def find_occurences(query, collection, skip, limit):
     pipeline = [
