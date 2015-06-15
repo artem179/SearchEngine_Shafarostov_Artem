@@ -13,6 +13,7 @@ You need the following apps installed:
 $ git clone https://github.com/cs-hse-projects/SearchEngine_Shafarostov_Artem.git
 $ cd SearchEngine_Shafarostov_Artem
 $ virtualenv env
+$ source ./env/bin/activate
 $ pip install -r requirements.txt
 ```
 
